@@ -1,23 +1,52 @@
 import streamlit as st
 import random
-import os
 import csv
+import requests
+from io import StringIO
+
+# GitHubのAPIエンドポイントとリポジトリ情報
+GITHUB_API_URL = "https://github.com/RK-0730/Quize.git"
+GITHUB_USERNAME = "RK-0730"
+GITHUB_REPO = "Quize"
+GITHUB_PATH = ""  # リポジトリのルートディレクトリを指定。サブディレクトリの場合は "subdirectory" のように指定
+GITHUB_RAW_URL = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/main/"
+
+def get_qa_files():
+    # GitHubのリポジトリ内のCSVファイル一覧を取得する
+    url = f"{GITHUB_API_URL}/{GITHUB_USERNAME}/{GITHUB_REPO}/contents/{GITHUB_PATH}"
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        st.error(f"GitHubからファイル一覧の取得に失敗しました: {response.status_code}")
+        return []
+
+    files = response.json()
+    csv_files = [file['name'] for file in files if file['name'].lower().endswith('.csv')]
+    
+    return csv_files
 
 def load_questions(filename):
     questions = []
     
-    with open(filename, 'r', encoding='utf-8') as file:
-        csv_reader = csv.reader(file)
-        next(csv_reader)  # ヘッダーをスキップ
-        for row in csv_reader:
-            if len(row) >= 6:  # 最低限必要な列数をチェック
-                question = {
-                    'question': row[0],
-                    'answer': row[int(row[1])],  # 正解番号に対応する選択肢
-                    'options': row[2:],
-                    'answered_correctly': False
-                }
-                questions.append(question)
+    # GitHubからCSVファイルを読み込む
+    url = GITHUB_RAW_URL + filename
+    response = requests.get(url)
+    if response.status_code != 200:
+        st.error(f"ファイルの読み込みに失敗しました: {url}")
+        return questions
+
+    csv_file = StringIO(response.text)
+    csv_reader = csv.reader(csv_file)
+    next(csv_reader)  # ヘッダーをスキップ
+    for row in csv_reader:
+        if len(row) >= 6:  # 最低限必要な列数をチェック
+            question = {
+                'question': row[0],
+                'answer': row[int(row[1])],  # 正解番号に対応する選択肢
+                'options': row[2:],
+                'answered_correctly': False
+            }
+            questions.append(question)
     
     return questions
 
@@ -28,15 +57,12 @@ def create_quiz(question_data):
     
     return question, correct_answer, options
 
-def get_qa_files():
-    return [f[:-4] for f in os.listdir() if f.startswith('QA') and f.endswith('.csv')]
-
 def initialize_session_state(selected_file):
     if 'initialized' not in st.session_state or st.session_state.selected_file != selected_file:
         try:
-            all_questions = load_questions(f"{selected_file}.csv")
+            all_questions = load_questions(selected_file)
             if not all_questions:
-                st.error(f"{selected_file}.csvファイルが空です。")
+                st.error(f"{selected_file}ファイルが空です。")
                 return
             st.session_state.questions = random.sample(all_questions, min(5, len(all_questions)))
             st.session_state.answered_questions = []
@@ -49,8 +75,6 @@ def initialize_session_state(selected_file):
             st.session_state.last_correct = None
             st.session_state.initialized = True
             st.session_state.selected_file = selected_file
-        except FileNotFoundError:
-            st.error(f"{selected_file}.csvファイルが見つかりません。")
         except Exception as e:
             st.error(f"エラーが発生しました: {str(e)}")
 
@@ -60,11 +84,29 @@ def reset_quiz():
             del st.session_state[key]
 
 def main():
+    st.set_page_config(layout="wide")
+    
+    st.markdown("""
+    <style>
+    @media (max-width: 600px) {
+        .stButton>button {
+            width: 100%;
+        }
+        .stTextField>label {
+            font-size: 14px;
+        }
+        .stRadio>label {
+            font-size: 14px;
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.title("クイズアプリ")
 
     qa_files = get_qa_files()
     if not qa_files:
-        st.error("QAファイルが見つかりません。")
+        st.error("CSVファイルが見つかりません。")
         return
 
     selected_file = st.sidebar.selectbox("問題ファイルを選択してください", qa_files)
@@ -95,7 +137,7 @@ def main():
                         st.write(f"- {option}")
                 st.write("---")
         
-        if st.button("もう一度挑戦する"):
+        if st.button("もう一度挑戦する", key="retry"):
             reset_quiz()
             st.rerun()
         return
@@ -118,7 +160,7 @@ def main():
     user_answer = st.radio("選択してください:", options, key="user_answer", index=None)
 
     if not st.session_state.answered:
-        if st.button("回答する"):
+        if st.button("回答する", key="submit"):
             st.session_state.answered = True
             st.session_state.last_answer = user_answer
             st.session_state.last_correct = correct_answer
@@ -138,22 +180,19 @@ def main():
         else:
             st.error(f"不正解です。正解は {st.session_state.last_correct} でした。")
 
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("同じ問題をやり直す"):
-                st.session_state.answered = False
-                st.session_state.last_answer = None
-                st.session_state.last_correct = None
-                _, _, st.session_state.current_options = create_quiz(st.session_state.current_question)
-                st.rerun()
+        if st.button("同じ問題をやり直す", key="retry_same"):
+            st.session_state.answered = False
+            st.session_state.last_answer = None
+            st.session_state.last_correct = None
+            _, _, st.session_state.current_options = create_quiz(st.session_state.current_question)
+            st.rerun()
         
-        with col2:
-            if st.button("次の問題へ"):
-                st.session_state.answered_questions.append(st.session_state.current_question)
-                st.session_state.current_question = None
-                st.session_state.current_options = None
-                st.session_state.answered = False
-                st.rerun()
+        if st.button("次の問題へ", key="next"):
+            st.session_state.answered_questions.append(st.session_state.current_question)
+            st.session_state.current_question = None
+            st.session_state.current_options = None
+            st.session_state.answered = False
+            st.rerun()
 
 if __name__ == "__main__":
     main()
