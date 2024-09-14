@@ -1,25 +1,23 @@
 import streamlit as st
 import random
 import os
+import csv
 
 def load_questions(filename):
     questions = []
-    current_question = {}
     
     with open(filename, 'r', encoding='utf-8') as file:
-        for line in file:
-            line = line.strip()
-            if line.startswith('Q:'):
-                if current_question:
-                    questions.append(current_question)
-                current_question = {'question': line[2:].strip(), 'options': [], 'answered_correctly': False}
-            elif line.startswith('A:'):
-                current_question['answer'] = line[2:].strip()
-            elif line.startswith('-'):
-                current_question['options'].append(line[1:].strip())
-    
-    if current_question:
-        questions.append(current_question)
+        csv_reader = csv.reader(file)
+        next(csv_reader)  # ヘッダーをスキップ
+        for row in csv_reader:
+            if len(row) >= 6:  # 最低限必要な列数をチェック
+                question = {
+                    'question': row[0],
+                    'answer': row[int(row[1])],  # 正解番号に対応する選択肢
+                    'options': row[2:],
+                    'answered_correctly': False
+                }
+                questions.append(question)
     
     return questions
 
@@ -28,19 +26,17 @@ def create_quiz(question_data):
     correct_answer = question_data['answer']
     options = question_data['options'].copy()
     
-    random.shuffle(options)
-    
     return question, correct_answer, options
 
 def get_qa_files():
-    return [f[:-4] for f in os.listdir() if f.startswith('QA') and f.endswith('.txt')]
+    return [f[:-4] for f in os.listdir() if f.startswith('QA') and f.endswith('.csv')]
 
 def initialize_session_state(selected_file):
     if 'initialized' not in st.session_state or st.session_state.selected_file != selected_file:
         try:
-            all_questions = load_questions(f"{selected_file}.txt")
+            all_questions = load_questions(f"{selected_file}.csv")
             if not all_questions:
-                st.error(f"{selected_file}.txtファイルが空です。")
+                st.error(f"{selected_file}.csvファイルが空です。")
                 return
             st.session_state.questions = random.sample(all_questions, min(5, len(all_questions)))
             st.session_state.answered_questions = []
@@ -54,7 +50,7 @@ def initialize_session_state(selected_file):
             st.session_state.initialized = True
             st.session_state.selected_file = selected_file
         except FileNotFoundError:
-            st.error(f"{selected_file}.txtファイルが見つかりません。")
+            st.error(f"{selected_file}.csvファイルが見つかりません。")
         except Exception as e:
             st.error(f"エラーが発生しました: {str(e)}")
 
