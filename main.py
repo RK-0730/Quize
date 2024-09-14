@@ -29,7 +29,8 @@ def create_quiz(question_data):
     return question, correct_answer, options
 
 def get_qa_files():
-    return [f[:-4] for f in os.listdir() if f.startswith('QA') and f.endswith('.csv')]
+    files = [f[:-4] for f in os.listdir() if f.startswith('QA') and f.endswith('.csv')]
+    return sorted(files)  # ファイル名をソート
 
 def initialize_session_state(selected_file):
     if 'initialized' not in st.session_state or st.session_state.selected_file != selected_file:
@@ -67,8 +68,8 @@ def main():
         st.error("QAファイルが見つかりません。")
         return
 
-    selected_file = st.sidebar.selectbox("問題ファイルを選択してください", qa_files)
-    
+    selected_file = st.sidebar.selectbox("問題ファイルを選択してください", qa_files, index=0)  # index=0 を追加
+
     initialize_session_state(selected_file)
 
     if 'initialized' not in st.session_state or not st.session_state.initialized:
