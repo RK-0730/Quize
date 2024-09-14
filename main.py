@@ -13,7 +13,7 @@ def load_questions(filename):
             if len(row) >= 6:  # 最低限必要な列数をチェック
                 question = {
                     'question': row[0],
-                    'answer': row[int(row[1])],  # 正解番号に対応する選択肢
+                    'answer': row[int(row[1]) + 1],  # 正解番号に対応する選択肢 (インデックスを1つ増やす)
                     'options': row[2:],
                     'answered_correctly': False
                 }
