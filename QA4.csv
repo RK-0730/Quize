@@ -7,4 +7,4 @@ Amazon RDSのRead Replicaで、ソースインスタンスとは異なるDBエ�
 AWS CloudTrailで、管理イベントとデータイベントの保持期間の違いは？,2,同じ,管理イベントの方が長い,データイベントの方が長い,設定による
 Amazon DynamoDBのグローバルセカンダリインデックス（GSI）の最大数は？,3,5,10,20,50
 AWS Direct Connectの最大帯域幅は？,1,100 Gbps,40 Gbps,10 Gbps,1 Gbps
-Amazon EKSのKubernetes versionで、サポートされる最大のマイナーバージョン数は？,4,2,3,4,3
+Amazon EKSのKubernetes versionで、サポートされる最大のマイナーバージョン数は？,2,2,3,4,5

@@ -7,4 +7,4 @@ AWS KMSで、カスタマーマスターキー（CMK）の自動ローテーシ�
 Amazon Auroraのグローバルデータベース機能で、セカンダリリージョンに複製される際の最大遅延時間は？,1,1秒未満,5秒未満,10秒未満,30秒未満
 AWS CloudFormationのスタック更新で、置換が必要になるリソースの変更を防ぐ方法は？,4,UpdatePolicy の使用,DeletionPolicy の使用,StackPolicy の使用,UpdateReplacePolicyの使用
 Amazon ECSのタスク定義で、コンテナに特権アクセスを付与するパラメータは？,2,privileged,elevated,root,admin
-AWS Lambda関数のコールドスタート時間を短縮する方法として、効果が最も高いのは？,3,メモリ割り当ての増加,関数のバージョニング,Provisioned Concurrency の使用,環境変数の最小化
+AWS Lambda関数のコールドスタート時間を最も効果的に短縮する方法は？,3,メモリ割り当ての増加,関数のバージョニング,Provisioned Concurrency の使用,環境変数の最小化

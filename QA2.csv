@@ -3,8 +3,8 @@ AWSのデータウェアハウスサービスは？,4,RDS,DynamoDB,Neptune,Redsh
 AWSの機械学習プラットフォームは？,2,Comprehend,SageMaker,Rekognition,Polly
 AWSのモニタリングサービスは？,3,CloudTrail,Inspector,CloudWatch,Config
 AWSの Identity and Access Management サービスは？,1,IAM,Cognito,SSO,Directory Service
-AWSのメッセージングサービスは？,4,SNS,SQS,Kinesis,SQS
+AWSのメッセージングサービスは？,1,SNS,SQS,Kinesis,EventBridge
 AWSのオブジェクトストレージサービスは？,2,EBS,S3,EFS,FSx
 AWSのコンテナレジストリサービスは？,3,ECS,EKS,ECR,Fargate
 AWSのサーバーレスアプリケーションモデルは？,1,SAM,Serverless Framework,Claudia.js,Apex
-AWSのハイブリッドクラウド接続サービスは？,4,VPN,Direct Connect,Transit Gateway,Direct Connect
+AWSのプライベート専用接続サービスは？,2,VPN,Direct Connect,Transit Gateway,Storage Gateway
