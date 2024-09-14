@@ -1,0 +1,10 @@
+AWSのマルチAZ配置で、データベースの同期レプリケーションを提供するサービスは？,3,Aurora,DynamoDB,RDS,Redshift
+ELBのCross-Zone Load Balancingが無効の場合、トラフィックの分配方法は？,2,ラウンドロビン,AZごとのインスタンス数に比例,完全にランダム,リクエスト元のIPに基づく
+AWS Systems Managerの自動化機能で、EC2インスタンスのOSパッチ適用を行うコンポーネントは？,1,Patch Manager,State Manager,Inventory,Maintenance Windows
+AWS Direct Connectの仮想インターフェースタイプで、複数のVPCにアクセスできるものは？,4,パブリック仮想インターフェース,プライベート仮想インターフェース,トランジット仮想インターフェース,Direct Connect ゲートウェイ
+EBSボリュームのスナップショットで、増分バックアップが行われない条件は？,2,暗号化されたボリューム,別のAWSアカウントと共有されたスナップショット,前回のスナップショットから変更がない場合,ルートボリューム
+AWS KMSで、カスタマーマスターキー（CMK）の自動ローテーションの間隔は？,3,6ヶ月,9ヶ月,1年,2年
+Amazon Auroraのグローバルデータベース機能で、セカンダリリージョンに複製される際の最大遅延時間は？,1,1秒未満,5秒未満,10秒未満,30秒未満
+AWS CloudFormationのスタック更新で、置換が必要になるリソースの変更を防ぐ方法は？,4,UpdatePolicy の使用,DeletionPolicy の使用,StackPolicy の使用,UpdateReplacePolicyの使用
+Amazon ECSのタスク定義で、コンテナに特権アクセスを付与するパラメータは？,2,privileged,elevated,root,admin
+AWS Lambda関数のコールドスタート時間を短縮する方法として、効果が最も高いのは？,3,メモリ割り当ての増加,関数のバージョニング,Provisioned Concurrency の使用,環境変数の最小化

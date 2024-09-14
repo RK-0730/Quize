@@ -1,10 +1,10 @@
-日本の首都はどこですか？,3,大阪,京都,東京,名古屋
-次のうち、哺乳類ではないのはどれ？,3,クジラ,コウモリ,ペンギン,ゾウ
-1年の季節を表すものはどれ？,2,月曜日,冬,朝,夕方
-次のうち、惑星ではないのはどれ？,3,火星,木星,月,土星
-人間の体にない部位はどれ？,2,腕,尾,脚,頭
-次のうち、楽器ではないのはどれ？,3,ピアノ,バイオリン,傘,ドラム
-虹の色に含まれないのはどれ？,4,赤,青,緑,茶色
-次のうち、哺乳類はどれ？,2,カエル,イルカ,ワニ,サメ
-日本の国花は何？,3,チューリップ,バラ,桜,ひまわり
-次のうち、果物ではないのはどれ？,3,りんご,バナナ,じゃがいも,オレンジ
+AWSの全称は何ですか？,2,Amazon Web Services,Amazon World Services,Amazon Wide Services,Amazon Wireless Services
+EC2の略称は何ですか？,3,Elastic Cloud Computing,Easy Cloud Computing,Elastic Compute Cloud,Extended Compute Cloud
+S3の略称は何ですか？,4,Simple Storage System,Scalable Storage Service,Secure Storage System,Simple Storage Service
+AWSのデータベースサービスで、リレーショナルデータベース用のものは？,1,RDS,DynamoDB,Redshift,Neptune
+AWSの仮想ネットワークサービスは？,2,ECS,VPC,ELB,Route 53
+AWSのコンテナオーケストレーションサービスは？,3,ECR,EKS,ECS,Fargate
+AWSのサーバーレスコンピューティングサービスは？,1,Lambda,EC2,Batch,ECS
+AWSのコンテンツ配信ネットワーク（CDN）サービスは？,4,CloudFront,S3,Route 53,CloudFront
+AWSの負荷分散サービスは？,2,EC2,ELB,ALB,NLB
+AWSのDNSサービスは？,3,CloudFront,VPC,Route 53,Direct Connect
