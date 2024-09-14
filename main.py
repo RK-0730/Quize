@@ -61,7 +61,7 @@ def reset_quiz():
             del st.session_state[key]
 
 def main():
-    st.title("クイズアプリ")
+    st.title("AWSクイズ")
 
     qa_files = get_qa_files()
     if not qa_files:
